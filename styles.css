@@ -672,37 +672,28 @@ main { padding: var(--space) 0 0; }
 }
 .radio-vol { width: 7rem; min-height: 44px; accent-color: var(--sage-dark); }
 
-/* radio layout: info + controls on the left, raccoon stage on the right */
-.radio {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  column-gap: 1.5rem;
-  align-items: center;
-}
-.radio-head { grid-column: 1 / -1; }
-.radio-now, .radio-caption, .radio-controls { grid-column: 1; }
+/* raccoon perched on the radio's top edge; out of flow, so it never moves the radio's layout */
+.radio { position: relative; margin-top: 6.5rem; } /* room for the 4-line raccoon above it */
 .radio-viz {
-  grid-column: 2;
-  grid-row: 2 / span 3;
-  align-self: stretch;
-  display: grid;
-  place-content: center;
+  position: absolute;
+  right: 1.35rem;
+  bottom: calc(100% + 1px);
+  width: 11ch;
+  height: 4em;
   margin: 0;
-  padding: 0.85rem 1.1rem;
-  background: #fff;
-  border: 1px solid var(--sage-soft);
+  padding: 0;
+  overflow: hidden;
+  background: none;
   font-family: ui-monospace, "DejaVu Sans Mono", Menlo, Consolas, monospace;
   font-size: 16px;
   line-height: 1;
-  text-align: center;
   white-space: pre;
   color: var(--sage-dark);
+  pointer-events: none;
 }
 .radio.is-live .radio-viz { color: var(--ink); }
-.radio-viz.hop { transform: translateY(-2px); }
 @media (max-width: 560px) {
-  .radio { grid-template-columns: minmax(0, 1fr); }
-  .radio-viz { grid-column: 1; grid-row: auto; margin-top: 0.9rem; }
+  .radio-viz { right: 1.1rem; }
 }
 
 /* easter eggs */

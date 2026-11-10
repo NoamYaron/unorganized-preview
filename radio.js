@@ -319,12 +319,13 @@
     "  /\\___/\\  \n (       ) \n  /|   |\\  \n   /   \\   "
   ];
   var SLEEP = "  /\\___/\\ z\n ( =-.-= )Z\n  (     )  \n  (_____)  ";
-  var BARS = "\u2581\u2582\u2583\u2584\u2585\u2586\u2587\u2588", COLS = 11;
-  var FLAT = Array(COLS + 1).join(BARS[0]), an = null, buf, raf = 0, pose = 0, avg = 0, last = 0, hop = 0;
+  var an = null, buf, raf = 0, pose = 0, avg = 0, last = 0, shown = "";
   var viz = document.createElement("pre");
   viz.className = "radio-viz";
   viz.setAttribute("aria-hidden", "true");
-  function show(art, eq) { viz.textContent = art + "\n" + (eq || FLAT); }
+  function show(art) {
+    if (art !== shown) viz.textContent = shown = art; // touch the DOM only on a real change
+  }
   show(SLEEP);
   root.insertBefore(viz, root.querySelector(".radio-controls"));
   function vizStart() {
@@ -343,22 +344,24 @@
     }
     if (an.context.state !== "running") an.context.resume();
     cancelAnimationFrame(raf);
+    last = performance.now(); // hold the current pose for a full beat after (re)starting
     (function draw(t) {
       an.getByteTimeDomainData(buf);
-      var sum = 0, v = [], peak = 4, i;
+      var sum = 0, i;
       for (i = 0; i < buf.length; i++) sum += (buf[i] - 128) * (buf[i] - 128);
       var rms = Math.sqrt(sum / buf.length);
-      // Beat = RMS spike over a running average; at most one pose change per 500ms.
-      if (t - last > 500 && rms > avg * 1.3 + 2) { pose = 3 + (pose + 1 + Math.floor(Math.random() * 4)) % 5; last = hop = t; }
-      else if (t - last > 1000) { pose = pose === 1 ? 2 : 1; last = t; }
+      // Calm: at most one pose change per ~950ms; a beat picks a dance move, otherwise sway every 1.5s.
+      if (t - last >= 950) {
+        var next = rms > avg * 1.3 + 2 ? 3 + (pose + 1 + Math.floor(Math.random() * 4)) % 5
+          : t - last >= 1500 ? (pose === 1 ? 2 : 1) : pose;
+        if (next !== pose) { pose = next; last = t; }
+      }
       avg = avg * 0.95 + rms * 0.05;
-      for (i = 0; i < COLS; i++) { v[i] = Math.abs(buf[i * 22] - 128); peak = Math.max(peak, v[i]); }
-      viz.classList.toggle("hop", t - hop < 120);
-      show(POSES[pose], v.map(function (x) { return BARS[Math.round(x / peak * 7)]; }).join(""));
+      show(POSES[pose]);
       raf = requestAnimationFrame(draw);
     })(performance.now());
   }
-  function vizStop() { cancelAnimationFrame(raf); viz.classList.remove("hop"); show(SLEEP); }
+  function vizStop() { cancelAnimationFrame(raf); show(SLEEP); }
   music.addEventListener("playing", vizStart);
   music.addEventListener("pause", vizStop);
   music.addEventListener("ended", vizStop);
