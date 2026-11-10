@@ -12,7 +12,11 @@
   var meta = root.querySelector(".radio-meta");
   var buy = root.querySelector(".radio-buy");
   var caption = root.querySelector(".radio-caption");
-  var recent = [];
+  var bags = new Map();
+  var breakCount = 0;
+  var heard = 0;
+  var talkId = 0; // bumped on skip so an interrupted break never resumes
+  var TALK_GAP = 30; // seconds of music before Rocco talks again
   var queue = [];
   var pos = 0;
   var data = null;
@@ -23,17 +27,25 @@
   function $(sel) { return root.querySelector(sel); }
 
   function fill(tpl, ctx) {
-    return tpl.replace(/\{(\w+)\}/g, function (_, k) { return ctx[k] == null ? "" : String(ctx[k]); });
+    return tpl.replace(/\{(\w+)\}/g, function (_, k) { return ctx[k] == null ? "" : String(ctx[k]); }).replace(/\.\./g, ".");
   }
 
   function pick(list) {
     if (!list || !list.length) return null;
-    var choices = list.filter(function (x) { return recent.indexOf(x) === -1; });
-    if (!choices.length) choices = list;
-    var item = choices[Math.floor(Math.random() * choices.length)];
-    recent.push(item);
-    if (recent.length > 30) recent.shift();
-    return item;
+    // Shuffle bag: every line plays once before any line plays twice.
+    var bag = bags.get(list);
+    if (!bag || !bag.length) {
+      var last = bag && bag.last;
+      bag = list.slice();
+      for (var i = bag.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var tmp = bag[i]; bag[i] = bag[j]; bag[j] = tmp;
+      }
+      if (bag.length > 1 && bag[bag.length - 1] === last) bag.unshift(bag.pop());
+      bags.set(list, bag);
+    }
+    bag.last = bag.pop();
+    return bag.last;
   }
 
   function hourBank() {
@@ -139,12 +151,11 @@
     } else {
       var t = pick((n.time && n.time[hourBank()]) || []); if (t) bits.push(t);
     }
-    if (hasHebrew(next.title) || hasHebrew(next.release)) {
-      var h = pick(n.hebrewNext); if (h) bits.push(fill(h, c));
-    } else {
-      var pool = (n.introsByCat && n.introsByCat[next.cat] || []).concat(n.introsGeneric || []);
-      var intro = pick(pool); if (intro) bits.push(fill(intro, c));
+    breakCount += 1;
+    if (breakCount % 6 === 0) {
+      var r = pick(n.rocco); if (r) bits.unshift(r);
     }
+    var intro = trackIntro(next); if (intro) bits.push(intro);
     if (Math.random() < 0.3) {
       var ap = (n.artistsBySlug && next.artistSlug && n.artistsBySlug[next.artistSlug]) || n.artistsGeneric || [];
       var a = pick(ap); if (a) bits.push(fill(a, c));
@@ -152,9 +163,26 @@
     return bits;
   }
 
+  function trackIntro(next) {
+    var n = data.narrator;
+    if (hasHebrew(next.title) || hasHebrew(next.release)) {
+      var h = pick(n.hebrewNext); return h && fill(h, ctxFor(next));
+    }
+    var pool = n.introsByCat && n.introsByCat[next.cat];
+    if (!pool || Math.random() < 0.5) pool = n.introsGeneric;
+    var t = pick(pool); return t && fill(t, ctxFor(next));
+  }
+
+  // First Play of a session: Rocco introduces himself, then the first track.
+  function introLines() {
+    var hi = pick(data.narrator.intro);
+    var t = trackIntro(current());
+    return [hi, t].filter(Boolean);
+  }
+
   function flattenCaption(bits) {
     return bits.map(function (b) {
-      if (b && b.banter) return "MIC: " + b.banter.mic + "  CRATE: " + b.banter.crate;
+      if (b && b.banter) return "ROCCO: " + b.banter.mic + "  CRATE: " + b.banter.crate;
       return b;
     }).join(" ");
   }
@@ -176,6 +204,8 @@
   }
 
   function playBits(bits) {
+    var id = ++talkId;
+    var stale = function () { return id !== talkId ? new Promise(function () {}) : null; };
     talking = true;
     setCaption(flattenCaption(bits));
     var seq = [];
@@ -188,8 +218,9 @@
       }
     });
     return seq.reduce(function (p, item) {
-      return p.then(function () { return playClip(item.audio ? audioUrl(item.audio) : ""); });
+      return p.then(function () { return stale() || playClip(item.audio ? audioUrl(item.audio) : ""); });
     }, Promise.resolve()).then(function () {
+      if (stale()) return stale();
       talking = false;
     });
   }
@@ -217,7 +248,13 @@
     if (!started) {
       started = true;
       wantPlay = true;
-      playTrack();
+      showTrack(current());
+      root.classList.add("is-live");
+      playBtn.textContent = "Pause";
+      playBtn.setAttribute("aria-label", "Pause");
+      playBits(introLines()).then(function () {
+        if (wantPlay) playTrack();
+      });
       return;
     }
     if (talking) {
@@ -248,6 +285,7 @@
   function onSkip() {
     started = true;
     wantPlay = true;
+    talkId += 1;
     voice.pause();
     talking = false;
     setCaption("");
@@ -259,33 +297,38 @@
     var prev = current();
     advance();
     var next = current();
-    var bits = breakLines(prev, next);
+    heard += isFinite(music.duration) ? music.duration : 0;
+    var bits = [];
+    if (heard >= TALK_GAP) { heard = 0; bits = breakLines(prev, next); }
     showTrack(next);
     playBits(bits).then(function () {
       if (wantPlay) playTrack();
     });
   }
 
-  // Dancing ASCII raccoon: changes pose on each beat (RMS spike over a running average).
+  // Dancing ASCII raccoon. Every frame is 4 lines x 11 columns, so the stage never jumps.
+  // 0 = idle, 1-2 = idle sway, 3+ = beat moves.
   var POSES = [
-    "   /\\___/\\   \n  ( =o.o= )  \n   /|   |\\~~ \n    /   \\    ",
-    "  /\\___/\\    \n ( =o.o= )   \n \\\\|   |\\~~  \n   /   |     ",
-    "    /\\___/\\  \n   ( =o.o= ) \n  ~~/|   |// \n     |   \\   ",
-    " \\ /\\___/\\ / \n  ( =^.^= )  \n   \\|   |/~~ \n    /   \\    ",
-    "             \n   /\\___/\\   \n _( =>.<= )_ \n   _/   \\_~~ ",
-    "   /\\___/\\   \n  (       )  \n   /|   |\\~~ \n    /   \\    "
+    "  /\\___/\\  \n ( =o.o= ) \n  /|   |\\  \n   /   \\   ",
+    " /\\___/\\   \n( =o.o= )  \n /|   |\\   \n   /   \\   ",
+    "   /\\___/\\ \n  ( =o.o= )\n   /|   |\\ \n   /   \\   ",
+    " /\\___/\\   \n( =o.o= )  \n\\\\|   |\\   \n  /   |    ",
+    "   /\\___/\\ \n  ( =o.o= )\n   /|   |//\n    |   \\  ",
+    "\\ /\\___/\\ /\n ( =^.^= ) \n   |   |   \n   /   \\   ",
+    "           \n  /\\___/\\  \n_( =>.<= )_\n  _/   \\_  ",
+    "  /\\___/\\  \n (       ) \n  /|   |\\  \n   /   \\   "
   ];
-  var SLEEP = "   /\\___/\\  z\n  ( =-.-= ) Z\n   (     )~~ \n    `---`    ";
-  var BARS = "\u2581\u2582\u2583\u2584\u2585\u2586\u2587\u2588", COLS = 13;
-  var FLAT = Array(COLS + 1).join(BARS[0]), an = null, buf, raf = 0, pose = 0, avg = 0, last = 0;
+  var SLEEP = "  /\\___/\\ z\n ( =-.-= )Z\n  (     )  \n  (_____)  ";
+  var BARS = "\u2581\u2582\u2583\u2584\u2585\u2586\u2587\u2588", COLS = 11;
+  var FLAT = Array(COLS + 1).join(BARS[0]), an = null, buf, raf = 0, pose = 0, avg = 0, last = 0, hop = 0;
   var viz = document.createElement("pre");
   viz.className = "radio-viz";
   viz.setAttribute("aria-hidden", "true");
-  function show(art, up, eq) { viz.textContent = (up ? art + "\n " : " \n" + art) + "\n" + (eq || FLAT); }
-  show(SLEEP, false);
+  function show(art, eq) { viz.textContent = art + "\n" + (eq || FLAT); }
+  show(SLEEP);
   root.insertBefore(viz, root.querySelector(".radio-controls"));
   function vizStart() {
-    if (matchMedia("(prefers-reduced-motion: reduce)").matches || an === false) return show(POSES[0], false);
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches || an === false) return show(POSES[0]);
     if (!an) {
       try {
         // Cross-origin audio without CORS would go silent through Web Audio, so only tap same-origin.
@@ -296,7 +339,7 @@
         buf = new Uint8Array(an.fftSize);
         ctx.createMediaElementSource(music).connect(an);
         an.connect(ctx.destination);
-      } catch (e) { an = false; return show(POSES[0], false); }
+      } catch (e) { an = false; return show(POSES[0]); }
     }
     if (an.context.state !== "running") an.context.resume();
     cancelAnimationFrame(raf);
@@ -305,15 +348,17 @@
       var sum = 0, v = [], peak = 4, i;
       for (i = 0; i < buf.length; i++) sum += (buf[i] - 128) * (buf[i] - 128);
       var rms = Math.sqrt(sum / buf.length);
-      // A beat is a spike over the running average; steady audio still gets a move every 600ms.
-      if (t - last > 250 && (rms > avg * 1.3 + 2 || t - last > 600)) { pose = (pose + 1 + Math.floor(Math.random() * 4)) % POSES.length; last = t; }
+      // Beat = RMS spike over a running average; at most one pose change per 500ms.
+      if (t - last > 500 && rms > avg * 1.3 + 2) { pose = 3 + (pose + 1 + Math.floor(Math.random() * 4)) % 5; last = hop = t; }
+      else if (t - last > 1000) { pose = pose === 1 ? 2 : 1; last = t; }
       avg = avg * 0.95 + rms * 0.05;
-      for (i = 0; i < COLS; i++) { v[i] = Math.abs(buf[i * 18] - 128); peak = Math.max(peak, v[i]); }
-      show(POSES[pose], t - last < 120, v.map(function (x) { return BARS[Math.round(x / peak * 7)]; }).join(""));
+      for (i = 0; i < COLS; i++) { v[i] = Math.abs(buf[i * 22] - 128); peak = Math.max(peak, v[i]); }
+      viz.classList.toggle("hop", t - hop < 120);
+      show(POSES[pose], v.map(function (x) { return BARS[Math.round(x / peak * 7)]; }).join(""));
       raf = requestAnimationFrame(draw);
     })(performance.now());
   }
-  function vizStop() { cancelAnimationFrame(raf); show(SLEEP, false); }
+  function vizStop() { cancelAnimationFrame(raf); viz.classList.remove("hop"); show(SLEEP); }
   music.addEventListener("playing", vizStart);
   music.addEventListener("pause", vizStop);
   music.addEventListener("ended", vizStop);

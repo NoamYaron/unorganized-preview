@@ -672,17 +672,38 @@ main { padding: var(--space) 0 0; }
 }
 .radio-vol { width: 7rem; min-height: 44px; accent-color: var(--sage-dark); }
 
+/* radio layout: info + controls on the left, raccoon stage on the right */
+.radio {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  column-gap: 1.5rem;
+  align-items: center;
+}
+.radio-head { grid-column: 1 / -1; }
+.radio-now, .radio-caption, .radio-controls { grid-column: 1; }
 .radio-viz {
-  width: max-content;
-  margin: 0.75rem auto 0;
+  grid-column: 2;
+  grid-row: 2 / span 3;
+  align-self: stretch;
+  display: grid;
+  place-content: center;
+  margin: 0;
+  padding: 0.85rem 1.1rem;
+  background: #fff;
+  border: 1px solid var(--sage-soft);
   font-family: ui-monospace, "DejaVu Sans Mono", Menlo, Consolas, monospace;
-  font-size: 15px;
-  line-height: 1.15;
-  color: var(--sage-dark);
+  font-size: 16px;
+  line-height: 1;
+  text-align: center;
   white-space: pre;
-  overflow: hidden;
+  color: var(--sage-dark);
 }
 .radio.is-live .radio-viz { color: var(--ink); }
+.radio-viz.hop { transform: translateY(-2px); }
+@media (max-width: 560px) {
+  .radio { grid-template-columns: minmax(0, 1fr); }
+  .radio-viz { grid-column: 1; grid-row: auto; margin-top: 0.9rem; }
+}
 
 /* easter eggs */
 .ascii a.egg { color: inherit; text-decoration: none; }
