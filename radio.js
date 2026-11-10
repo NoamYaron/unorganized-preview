@@ -266,6 +266,58 @@
     });
   }
 
+  // Dancing ASCII raccoon: changes pose on each beat (RMS spike over a running average).
+  var POSES = [
+    "   /\\___/\\   \n  ( =o.o= )  \n   /|   |\\~~ \n    /   \\    ",
+    "  /\\___/\\    \n ( =o.o= )   \n \\\\|   |\\~~  \n   /   |     ",
+    "    /\\___/\\  \n   ( =o.o= ) \n  ~~/|   |// \n     |   \\   ",
+    " \\ /\\___/\\ / \n  ( =^.^= )  \n   \\|   |/~~ \n    /   \\    ",
+    "             \n   /\\___/\\   \n _( =>.<= )_ \n   _/   \\_~~ ",
+    "   /\\___/\\   \n  (       )  \n   /|   |\\~~ \n    /   \\    "
+  ];
+  var SLEEP = "   /\\___/\\  z\n  ( =-.-= ) Z\n   (     )~~ \n    `---`    ";
+  var BARS = "\u2581\u2582\u2583\u2584\u2585\u2586\u2587\u2588", COLS = 13;
+  var FLAT = Array(COLS + 1).join(BARS[0]), an = null, buf, raf = 0, pose = 0, avg = 0, last = 0;
+  var viz = document.createElement("pre");
+  viz.className = "radio-viz";
+  viz.setAttribute("aria-hidden", "true");
+  function show(art, up, eq) { viz.textContent = (up ? art + "\n " : " \n" + art) + "\n" + (eq || FLAT); }
+  show(SLEEP, false);
+  root.insertBefore(viz, root.querySelector(".radio-controls"));
+  function vizStart() {
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches || an === false) return show(POSES[0], false);
+    if (!an) {
+      try {
+        // Cross-origin audio without CORS would go silent through Web Audio, so only tap same-origin.
+        if (new URL(music.currentSrc, location.href).origin !== location.origin) throw 0;
+        var ctx = new (window.AudioContext || window.webkitAudioContext)();
+        an = ctx.createAnalyser();
+        an.fftSize = 256;
+        buf = new Uint8Array(an.fftSize);
+        ctx.createMediaElementSource(music).connect(an);
+        an.connect(ctx.destination);
+      } catch (e) { an = false; return show(POSES[0], false); }
+    }
+    if (an.context.state !== "running") an.context.resume();
+    cancelAnimationFrame(raf);
+    (function draw(t) {
+      an.getByteTimeDomainData(buf);
+      var sum = 0, v = [], peak = 4, i;
+      for (i = 0; i < buf.length; i++) sum += (buf[i] - 128) * (buf[i] - 128);
+      var rms = Math.sqrt(sum / buf.length);
+      // A beat is a spike over the running average; steady audio still gets a move every 600ms.
+      if (t - last > 250 && (rms > avg * 1.3 + 2 || t - last > 600)) { pose = (pose + 1 + Math.floor(Math.random() * 4)) % POSES.length; last = t; }
+      avg = avg * 0.95 + rms * 0.05;
+      for (i = 0; i < COLS; i++) { v[i] = Math.abs(buf[i * 18] - 128); peak = Math.max(peak, v[i]); }
+      show(POSES[pose], t - last < 120, v.map(function (x) { return BARS[Math.round(x / peak * 7)]; }).join(""));
+      raf = requestAnimationFrame(draw);
+    })(performance.now());
+  }
+  function vizStop() { cancelAnimationFrame(raf); show(SLEEP, false); }
+  music.addEventListener("playing", vizStart);
+  music.addEventListener("pause", vizStop);
+  music.addEventListener("ended", vizStop);
+
   playBtn.addEventListener("click", onPlayPause);
   skipBtn.addEventListener("click", onSkip);
   vol.addEventListener("input", function () {

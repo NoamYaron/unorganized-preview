@@ -672,6 +672,27 @@ main { padding: var(--space) 0 0; }
 }
 .radio-vol { width: 7rem; min-height: 44px; accent-color: var(--sage-dark); }
 
+.radio-viz {
+  width: max-content;
+  margin: 0.75rem auto 0;
+  font-family: ui-monospace, "DejaVu Sans Mono", Menlo, Consolas, monospace;
+  font-size: 15px;
+  line-height: 1.15;
+  color: var(--sage-dark);
+  white-space: pre;
+  overflow: hidden;
+}
+.radio.is-live .radio-viz { color: var(--ink); }
+
+/* easter eggs */
+.ascii a.egg { color: inherit; text-decoration: none; }
+.ascii a.egg:hover { color: var(--link); text-decoration: underline; }
+.staff { font-size: 12px; color: var(--muted); min-height: 24px; display: inline-flex; align-items: center; }
+.schedule li { grid-template-columns: 1fr 1fr; }
+.schedule li::before { content: none; }
+.sticky { transform: rotate(-1.5deg); text-align: center; font-family: var(--display); font-size: 13px; }
+del { color: var(--muted); text-decoration-thickness: 2px; }
+
 /* section rhythm: one generous step between home blocks */
 .hero,
 .radio,
