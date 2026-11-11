@@ -2,7 +2,7 @@
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
   // Fade-in: only hide cards that start off-screen, so no-JS and first paint stay visible.
-  var cards = document.querySelectorAll(".cover-grid > li, .feature");
+  var cards = document.querySelectorAll(".cover-grid > li, .artist-grid > li, .feature");
   if (cards.length && "IntersectionObserver" in window) {
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (e) {

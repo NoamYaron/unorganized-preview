@@ -7,7 +7,7 @@
     "This is UNORGANIZED RADIO. We press play. We don't promise a playlist that makes sense.",
     "UNORGANIZED RADIO, Tel Aviv. Leftovers with catalog numbers.",
     "Stay where you are. This is UNORGANIZED RADIO.",
-    "UNORGANIZED RADIO. Jungle, haze, leftover pop, and whatever else fell off the table.",
+    "UNORGANIZED RADIO. Music from our friends, and from friends we haven't met yet.",
     "You're on the label station. No commercials. No cookie banner. Just records and a raccoon.",
     "UNORGANIZED RADIO. We put a catalog number on it and called it a day.",
     "This is UNORGANIZED RADIO, coming at you from Tel Aviv, more or less on purpose.",
@@ -51,14 +51,14 @@
     "UR002": [
       "CHEAP LOVE HOTEL, the album: sexting w my besty. {year}.",
       "Here's a cut from sexting w my besty, CHEAP LOVE HOTEL, catalog {cat}.",
-      "sexting w my besty. Sixteen tracks, all lowercase. I respect that.",
+      "sexting w my besty. Sixteen tracks. I counted twice.",
       "Checking in to CHEAP LOVE HOTEL. Room {cat}. Don't ask about the minibar."
     ],
     "UR003": [
-      "VIVA LA SHIBORTAL, KUDANT KERL S. Bandcamp only. That's not a threat, it's a filing note.",
-      "This one's Bandcamp only: VIVA LA SHIBORTAL, KUDANT KERL S., {cat}.",
+      "VIVA LA SHIBORTAL, KUDANT KERL S. That's not a threat, it's a title.",
+      "This one's VIVA LA SHIBORTAL, KUDANT KERL S., {cat}.",
       "Twenty two tracks on VIVA LA SHIBORTAL. I tried to count them and lost my place twice.",
-      "KUDANT KERL S., VIVA LA SHIBORTAL. If you want it, Bandcamp is the only bin it lives in."
+      "KUDANT KERL S., VIVA LA SHIBORTAL. The Bandcamp version has seven extra tracks. Bring snacks."
     ],
     "UR004": [
       "VAIZI, catalog {cat}, from {year}. This one lives on the streaming services for now. No Bandcamp link in the cabinet.",
@@ -88,8 +88,8 @@
       "Ballet. Double Parking. I've been double parked behind this bin since Tuesday."
     ],
     "UR009": [
-      "Mo Rayon, Fantasy, {cat}. Bandcamp only, so if you want it, you know where to go.",
-      "Fantasy, Mo Rayon, two thousand twenty five. This one lives on Bandcamp.",
+      "Mo Rayon, Fantasy, {cat}. It doesn't stream everywhere, so Bandcamp is your best bet.",
+      "Fantasy, Mo Rayon, two thousand twenty five. If it won't play where you are, try Bandcamp.",
       "Fantasy. Groggy moments and shifting dreams. Basically my morning. Mo Rayon.",
       "Another day, another fantasy. Mo Rayon, {cat}."
     ],
@@ -163,7 +163,7 @@
     ],
     "kudant-kerl-s": [
       "KUDANT KERL S., the artist behind VIVA LA SHIBORTAL.",
-      "KUDANT KERL S. One record in the cabinet, and it only lives on Bandcamp."
+      "KUDANT KERL S. One record in the cabinet, and no comment on anything else."
     ],
     "vaizi": [
       "VAIZI, one record on the label so far.",
@@ -244,7 +244,7 @@
     "Want to take it home? Bandcamp. The little button is not shy.",
     "UNORGANIZED REKORDS on Bandcamp: the filing cabinet with a buy button.",
     "Streaming is fine. Buying on Bandcamp is how the lights stay on, in a manner of speaking.",
-    "Some of these are Bandcamp only. That's not a mood. That's the distribution.",
+    "A couple of these aren't on Bandcamp at all. That's not a mood. That's the distribution.",
     "Press buy on Bandcamp if you like what you hear. We will not mention it again. We probably will.",
     "Every record you buy on Bandcamp, one raccoon gets a slightly better snack. That's not a real program. It should be.",
     "Merch is at Chop Shop, the music is on Bandcamp, and I'm in the crate. That's the whole map.",
@@ -283,7 +283,7 @@
       "Prime raccoon hours. The city's asleep and the bins are full.",
       "The clock says night. The catalog does not care.",
       "Night shift, Rocco on the mic. If you hear rustling, that's me. If you hear growling, that's the crate.",
-      "Late. Jungle, haze, leftover pop. The usual excuses.",
+      "Late. Records from friends, in no particular order.",
       "Somewhere in Tel Aviv a bin lid just fell over. Not me. This time."
     ]
   },
@@ -443,7 +443,6 @@
     "This is UNORGANIZED RADIO. We press play. We don't promise a playlist that makes sense.": "/unorganized-preview/radio/voice/4b0be840e3657ec7.mp3",
     "UNORGANIZED RADIO, Tel Aviv. Leftovers with catalog numbers.": "/unorganized-preview/radio/voice/43ffc926f56ad5fc.mp3",
     "Stay where you are. This is UNORGANIZED RADIO.": "/unorganized-preview/radio/voice/d06871744272547c.mp3",
-    "UNORGANIZED RADIO. Jungle, haze, leftover pop, and whatever else fell off the table.": "/unorganized-preview/radio/voice/a3a980f939565790.mp3",
     "You're on the label station. No commercials. No cookie banner. Just records and a raccoon.": "/unorganized-preview/radio/voice/9fc685bfdd4aa2e4.mp3",
     "UNORGANIZED RADIO. We put a catalog number on it and called it a day.": "/unorganized-preview/radio/voice/83b24258c400b74f.mp3",
     "This is UNORGANIZED RADIO, coming at you from Tel Aviv, more or less on purpose.": "/unorganized-preview/radio/voice/44d1e555cdd71000.mp3",
@@ -498,7 +497,7 @@
     "Want to take it home? Bandcamp. The little button is not shy.": "/unorganized-preview/radio/voice/3f17a9cbfce9535c.mp3",
     "UNORGANIZED REKORDS on Bandcamp: the filing cabinet with a buy button.": "/unorganized-preview/radio/voice/073bb86a8ee55e7a.mp3",
     "Streaming is fine. Buying on Bandcamp is how the lights stay on, in a manner of speaking.": "/unorganized-preview/radio/voice/cfdf256a1fc1f6c4.mp3",
-    "Some of these are Bandcamp only. That's not a mood. That's the distribution.": "/unorganized-preview/radio/voice/0630b45365ce9472.mp3",
+    "A couple of these aren't on Bandcamp at all. That's not a mood. That's the distribution.": "/unorganized-preview/radio/voice/cba45ab91aa53d76.mp3",
     "Press buy on Bandcamp if you like what you hear. We will not mention it again. We probably will.": "/unorganized-preview/radio/voice/cb998ef555731432.mp3",
     "Every record you buy on Bandcamp, one raccoon gets a slightly better snack. That's not a real program. It should be.": "/unorganized-preview/radio/voice/5a03acc2f5827f2d.mp3",
     "Merch is at Chop Shop, the music is on Bandcamp, and I'm in the crate. That's the whole map.": "/unorganized-preview/radio/voice/3ace12ff9a72f217.mp3",
@@ -528,7 +527,6 @@
     "Prime raccoon hours. The city's asleep and the bins are full.": "/unorganized-preview/radio/voice/eee8ea62355c65b9.mp3",
     "The clock says night. The catalog does not care.": "/unorganized-preview/radio/voice/8d44b75dda34c264.mp3",
     "Night shift, Rocco on the mic. If you hear rustling, that's me. If you hear growling, that's the crate.": "/unorganized-preview/radio/voice/6bd8eb43f4787752.mp3",
-    "Late. Jungle, haze, leftover pop. The usual excuses.": "/unorganized-preview/radio/voice/e8e224f3385a2a8d.mp3",
     "Somewhere in Tel Aviv a bin lid just fell over. Not me. This time.": "/unorganized-preview/radio/voice/c53b7fa8928ea076.mp3",
     "Mo Rayon. Two records of his own in the crate, and he turns up in Di Vundad too.": "/unorganized-preview/radio/voice/9f281cdbf39f1782.mp3",
     "Mo Rayon, on UNORGANIZED REKORDS. Young Again Now and Fantasy are both in the cabinet.": "/unorganized-preview/radio/voice/092170b654a3e186.mp3",
@@ -537,7 +535,7 @@
     "That's CHEAP LOVE HOTEL. If you've been following the catalog, you've been here before.": "/unorganized-preview/radio/voice/28876926a0ad1a27.mp3",
     "CHEAP LOVE HOTEL. Always a vacancy in the crate.": "/unorganized-preview/radio/voice/7f08fada6842b160.mp3",
     "KUDANT KERL S., the artist behind VIVA LA SHIBORTAL.": "/unorganized-preview/radio/voice/fa51b13f74ef7d88.mp3",
-    "KUDANT KERL S. One record in the cabinet, and it only lives on Bandcamp.": "/unorganized-preview/radio/voice/41895aa799819d56.mp3",
+    "KUDANT KERL S. One record in the cabinet, and no comment on anything else.": "/unorganized-preview/radio/voice/fcfacc4c042751fa.mp3",
     "VAIZI, one record on the label so far.": "/unorganized-preview/radio/voice/63b5e1b42a98c8da.mp3",
     "That's VAIZI. The record's on the streaming services for now.": "/unorganized-preview/radio/voice/349cb6b12a9058b2.mp3",
     "One EP from this artist in the cabinet. Name and title are on the screen.": "/unorganized-preview/radio/voice/dc42bf04efa6706d.mp3",
@@ -613,12 +611,12 @@
     "Young Again Now. The very first record in the crate. I found it under all the others, which tracks.": "/unorganized-preview/radio/voice/bb8c5e1a2019c1af.mp3",
     "CHEAP LOVE HOTEL, the album: sexting w my besty. 2024.": "/unorganized-preview/radio/voice/8690926aa8dfb921.mp3",
     "Here's a cut from sexting w my besty, CHEAP LOVE HOTEL, catalog UR002.": "/unorganized-preview/radio/voice/1441aabbad48212f.mp3",
-    "sexting w my besty. Sixteen tracks, all lowercase. I respect that.": "/unorganized-preview/radio/voice/070a6229d3f88320.mp3",
+    "sexting w my besty. Sixteen tracks. I counted twice.": "/unorganized-preview/radio/voice/22245d22216a5640.mp3",
     "Checking in to CHEAP LOVE HOTEL. Room UR002. Don't ask about the minibar.": "/unorganized-preview/radio/voice/c2ec381b78b4d567.mp3",
-    "VIVA LA SHIBORTAL, KUDANT KERL S. Bandcamp only. That's not a threat, it's a filing note.": "/unorganized-preview/radio/voice/5f5bcc27517b08a9.mp3",
-    "This one's Bandcamp only: VIVA LA SHIBORTAL, KUDANT KERL S., UR003.": "/unorganized-preview/radio/voice/8c406ed842b43e53.mp3",
+    "VIVA LA SHIBORTAL, KUDANT KERL S. That's not a threat, it's a title.": "/unorganized-preview/radio/voice/82b1696655e93fe3.mp3",
+    "This one's VIVA LA SHIBORTAL, KUDANT KERL S., UR003.": "/unorganized-preview/radio/voice/ee294db9f6efdcc5.mp3",
     "Twenty two tracks on VIVA LA SHIBORTAL. I tried to count them and lost my place twice.": "/unorganized-preview/radio/voice/fee73a983695a785.mp3",
-    "KUDANT KERL S., VIVA LA SHIBORTAL. If you want it, Bandcamp is the only bin it lives in.": "/unorganized-preview/radio/voice/905b0be692ca9f2d.mp3",
+    "KUDANT KERL S., VIVA LA SHIBORTAL. The Bandcamp version has seven extra tracks. Bring snacks.": "/unorganized-preview/radio/voice/85aa060d1720b3db.mp3",
     "VAIZI, catalog UR004, from 2024. This one lives on the streaming services for now. No Bandcamp link in the cabinet.": "/unorganized-preview/radio/voice/3f073459249fe53d.mp3",
     "Next is VAIZI. The title is in Hebrew, on the screen, where it belongs.": "/unorganized-preview/radio/voice/b822715b3cce14b2.mp3",
     "VAIZI, UR004. Chop Shop presents, says the sleeve. I just press play.": "/unorganized-preview/radio/voice/e738111664138b3d.mp3",
@@ -636,8 +634,8 @@
     "Here's Ballet, off Double Parking. Watch the curb.": "/unorganized-preview/radio/voice/52daae3796a5dd85.mp3",
     "Double Parking. Somewhere between a bedroom and a pop rock band. Ballet.": "/unorganized-preview/radio/voice/7f176b1892e47bf8.mp3",
     "Ballet. Double Parking. I've been double parked behind this bin since Tuesday.": "/unorganized-preview/radio/voice/a75077865da59c01.mp3",
-    "Mo Rayon, Fantasy, UR009. Bandcamp only, so if you want it, you know where to go.": "/unorganized-preview/radio/voice/7c9dede44d6c618a.mp3",
-    "Fantasy, Mo Rayon, two thousand twenty five. This one lives on Bandcamp.": "/unorganized-preview/radio/voice/9c8daeaa1736c7f7.mp3",
+    "Mo Rayon, Fantasy, UR009. It doesn't stream everywhere, so Bandcamp is your best bet.": "/unorganized-preview/radio/voice/961d78348e20d4c0.mp3",
+    "Fantasy, Mo Rayon, two thousand twenty five. If it won't play where you are, try Bandcamp.": "/unorganized-preview/radio/voice/5a8e87c4b9639705.mp3",
     "Fantasy. Groggy moments and shifting dreams. Basically my morning. Mo Rayon.": "/unorganized-preview/radio/voice/5b09c49b074a61e9.mp3",
     "Another day, another fantasy. Mo Rayon, UR009.": "/unorganized-preview/radio/voice/0b1a96e8cd52b696.mp3",
     "Michael Swissa and Slimfim, catalog UR010. Title in Hebrew, on your screen. No Bandcamp link in the file.": "/unorganized-preview/radio/voice/9594aecf76995c80.mp3",
@@ -1031,6 +1029,8 @@
     "The next title is in Hebrew, so we're letting the artwork speak. Michael Swissa x Slimfim, catalog UR010.": "/unorganized-preview/radio/voice/b6d2246fc4130e6a.mp3",
     "I won't try the next title out loud. It's on the screen. Michael Swissa x Slimfim.": "/unorganized-preview/radio/voice/e6b53fe0fab12b86.mp3",
     "Hebrew title coming up. My accent is raccoon, so read it yourself. Michael Swissa x Slimfim.": "/unorganized-preview/radio/voice/db80d05646634042.mp3",
-    "Title's on the screen, in Hebrew, where it belongs. Michael Swissa x Slimfim, UR010.": "/unorganized-preview/radio/voice/d188dece8601d2dd.mp3"
+    "Title's on the screen, in Hebrew, where it belongs. Michael Swissa x Slimfim, UR010.": "/unorganized-preview/radio/voice/d188dece8601d2dd.mp3",
+    "UNORGANIZED RADIO. Music from our friends, and from friends we haven't met yet.": "/unorganized-preview/radio/voice/a528627f43864019.mp3",
+    "Late. Records from friends, in no particular order.": "/unorganized-preview/radio/voice/9a05b04489d18d7f.mp3"
   }
 }
