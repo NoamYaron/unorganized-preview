@@ -611,9 +611,9 @@ main { padding: var(--space) 0 0; }
   border-color: #ed1c24;
 }
 @media (prefers-reduced-motion: no-preference) {
-  .radio.is-live .on-air { animation: onair 1.6s steps(1, end) infinite; }
+  .radio.is-live .on-air { animation: onair 2.4s ease-in-out infinite; }
 }
-@keyframes onair { 50% { opacity: 0.4; } }
+@keyframes onair { 50% { opacity: 0.45; } }
 .radio-now {
   display: grid;
   grid-template-columns: 96px minmax(0, 1fr);
@@ -767,6 +767,70 @@ del { color: var(--muted); text-decoration-thickness: 2px; }
   .logo, .logo img { height: 52px; }
   .nav { justify-content: center; font-size: 12px; gap: 0 0.7rem; }
   .hero .lede { text-align: left; }
+}
+
+
+/* ----- motion (hover wiggle, scroll fade, grain, Rocco peek) ----- */
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes wiggle {
+    0%, 100% { transform: rotate(0deg); }
+    30% { transform: rotate(-2deg); }
+    70% { transform: rotate(2deg); }
+  }
+  .tile:hover img,
+  .feature img:hover,
+  .release-cover:hover,
+  a.btn:hover,
+  .radio-controls button:hover:enabled,
+  .demo-form button:hover {
+    animation: wiggle 0.3s ease-in-out 1;
+  }
+  .cover-grid > li.is-hidden,
+  .feature.is-hidden {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  .cover-grid > li.is-in,
+  .feature.is-in {
+    opacity: 1;
+    transform: none;
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  body::before {
+    content: "";
+    position: fixed;
+    inset: -50%;
+    width: 200%;
+    height: 200%;
+    pointer-events: none;
+    z-index: 80;
+    opacity: 0.055;
+    background: url(grain.png) repeat;
+    background-size: 128px 128px;
+    animation: grain-drift 24s linear infinite;
+  }
+  @keyframes grain-drift {
+    to { transform: translate(-128px, -128px); }
+  }
+  .rocco-peek {
+    position: fixed;
+    right: 0.9rem;
+    bottom: 0;
+    z-index: 15;
+    margin: 0;
+    padding: 0;
+    background: none;
+    border: 0;
+    font-family: ui-monospace, "DejaVu Sans Mono", Menlo, Consolas, monospace;
+    font-size: 14px;
+    line-height: 1;
+    color: var(--ink);
+    white-space: pre;
+    pointer-events: none;
+    transform: translateY(110%);
+    transition: transform 0.45s ease;
+  }
+  .rocco-peek.is-up { transform: translateY(0); }
 }
 
 @media (prefers-reduced-motion: reduce) {
